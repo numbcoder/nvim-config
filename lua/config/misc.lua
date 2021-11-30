@@ -16,16 +16,7 @@ end
 
 -- gitsigns
 M.gitsigns = function()
-  require('gitsigns').setup {
-    signs = {
-      add = { hl = 'GitGutterAdd', text = '│', numhl = 'GitGutterAdd' },
-      change = { hl = 'GitGutterChange', text = '│', numhl = 'GitGutterChange' },
-      delete = { hl = 'GitGutterDelete', text = '│', numhl = 'GitGutterDelete' },
-      topdelete = { hl = 'GitGutterDelete', text = '│', numhl = 'GitGutterDelete' },
-      changedelete = { hl = 'GitGutterChangeDelete', text = '│', numhl = 'GitGutterChangeDelete' },
-    },
-    keymaps = {},
-  }
+  require('gitsigns').setup()
 end
 
 -- hlslens

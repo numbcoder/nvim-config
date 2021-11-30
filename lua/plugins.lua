@@ -13,7 +13,8 @@ vim.cmd [[packadd packer.nvim]]
 
 require('packer').startup({function(use)
   -- Packer can manage itself
-  use { "wbthomason/packer.nvim", event = 'User PackLoad' }
+  use { 'wbthomason/packer.nvim', event = 'User PackLoad' }
+  use { 'nvim-lua/plenary.nvim' }
 
   use {
     "nathom/filetype.nvim",
@@ -49,31 +50,52 @@ require('packer').startup({function(use)
   }
 
   use {
+    'kyazdani42/nvim-tree.lua',
+    wants = { 'nvim-web-devicons' },
+    config = [[require('config.nvim-tree')]],
+    cmd = {'NvimTreeToggle', 'NvimTreeFindFileToggle'}
+  }
+
+  use {
     'nvim-telescope/telescope.nvim',
     requires = {
-      { 'nvim-lua/plenary.nvim' },
       { 'nvim-telescope/telescope-fzf-native.nvim', run = "make" },
-      { 'fannheyward/telescope-coc.nvim' },
     },
     wants = {
-        'plenary.nvim',
-        'telescope-coc.nvim',
-        'telescope-fzf-native.nvim',
-      },
+      'plenary.nvim',
+      'telescope-fzf-native.nvim',
+    },
     cmd = "Telescope",
     config = [[require('config.telescope')]],
   }
 
+  use { "onsails/lspkind-nvim", event = 'User PackLoad' }
+  use { "hrsh7th/nvim-cmp", config = [[require('config.cmp')]], after = "lspkind-nvim" }
+  use { "hrsh7th/cmp-path", after = "nvim-cmp" }
+  use { "hrsh7th/cmp-cmdline", after = "nvim-cmp" }
+  use { 'tzachar/cmp-tabnine', run = './install.sh', after = "nvim-cmp" }
+
   use {
-    'neoclide/coc.nvim',
-    requires = { 'honza/vim-snippets' },
-    branch = 'release',
+    "dcampos/cmp-snippy",
+    requires = {
+      'dcampos/nvim-snippy',
+      'honza/vim-snippets',
+    },
+    after = "nvim-cmp"
+  }
+
+  use { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" }
+  use { "neovim/nvim-lspconfig", after = "cmp-nvim-lsp" }
+  use { 'tami5/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    wants = { 'plenary.nvim' },
+    config = [[require('config.misc').gitsigns()]],
     event = 'User PackLoad'
   }
-  use {
-    'github/copilot.vim',
-    event = 'User PackLoad'
-  }
+
+  use { 'github/copilot.vim', event = 'User PackLoad' }
 
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
   use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }

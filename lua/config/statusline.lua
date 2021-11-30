@@ -269,14 +269,15 @@ components.active[1] = {
   comps.git.add,
   comps.git.change,
   comps.git.remove,
-  -- comps.lsp.name,
-  -- comps.diagnos.err,
-  -- comps.diagnos.warn,
-  -- comps.diagnos.hint,
-  -- comps.diagnos.info
 }
 -- middle
-components.active[2] = {}
+components.active[2] = {
+  comps.lsp.name,
+  comps.diagnos.err,
+  comps.diagnos.warn,
+  comps.diagnos.hint,
+  comps.diagnos.info
+}
 -- right
 components.active[3] = {
   comps.file_type,
@@ -294,15 +295,12 @@ components.inactive[1] = {
 }
 
 M.setup = function()
-  vim.cmd([[autocmd User CocGitStatusChange lua require('config.statusline').update_gitsigns()]])
-
   require'feline'.setup {
     colors = colors,
     components = components,
     vi_mode_colors = vi_mode_colors,
     force_inactive = {
       filetypes = {
-        'coc-explorer',
         'NvimTree',
         'packer',
       },
@@ -310,25 +308,6 @@ M.setup = function()
       bufnames = {}
     }
   }
-end
-
--- transform coc_git_status to gitsigns table
-M.update_gitsigns = function()
-  local branch = vim.g.coc_git_status
-  if branch == nil then return end
-
-  local head = string.gsub(branch, '%s', '')
-  local dict = {added = 0, removed = 0, changed = 0}
-
-  local changes = vim.b.coc_git_status
-  if changes then
-    dict.added = tonumber(string.match(changes, '%+(%d+)')) or 0
-    dict.removed = tonumber(string.match(changes, '%-(%d+)')) or 0
-    dict.changed = tonumber(string.match(changes, '%~(%d+)')) or 0
-  end
-
-  vim.api.nvim_buf_set_var(0, 'gitsigns_head', head)
-  vim.api.nvim_buf_set_var(0, 'gitsigns_status_dict', dict)
 end
 
 return M

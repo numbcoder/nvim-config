@@ -69,4 +69,3 @@ telescope.setup{
 
 -- Extensions
 telescope.load_extension('fzf')
-telescope.load_extension('coc')
