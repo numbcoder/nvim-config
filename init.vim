@@ -44,7 +44,7 @@ set pumblend=10
 set lazyredraw
 set jumpoptions=stack
 " Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=600
+set updatetime=400
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 " always show signcolumns
