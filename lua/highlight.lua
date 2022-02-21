@@ -212,17 +212,54 @@ hl.plugins.lsp = {
   LspCxxHlGroupNamespace = colors.Blue,
   LspCxxHlSkippedRegion = colors.Grey,
   LspCxxHlSkippedRegionBeginEnd = colors.Red,
-  LspDiagnosticsDefaultError = {fg = c.dark_red},
-  LspDiagnosticsDefaultHint = {fg = c.dark_purple},
-  LspDiagnosticsDefaultInformation = {fg = c.dark_cyan},
-  LspDiagnosticsDefaultWarning = {fg = c.dark_yellow},
-  LspDiagnosticsUnderlineError = {underline = true, sp = c.red},
-  LspDiagnosticsUnderlineHint = {underline = true, sp = c.purple},
-  LspDiagnosticsUnderlineInformation = {underline = true, sp = c.blue},
-  LspDiagnosticsUnderlineWarning = {underline = true, sp = c.yellow},
+  DiagnosticError = {fg = cfg.darker_diagnostics and c.dark_red or c.red},
+  DiagnosticHint = {fg = cfg.darker_diagnostics and c.dark_purple or c.purple},
+  DiagnosticInfo = {fg = cfg.darker_diagnostics and c.dark_cyan or c.cyan},
+  DiagnosticWarn = {fg = cfg.darker_diagnostics and c.dark_yellow or c.yellow},
+  DiagnosticUnderlineError = {underline = not cfg.diagnostics_undercurl, undercurl = cfg.diagnostics_undercurl, sp = c.red},
+  DiagnosticUnderlineHint = {underline = not cfg.diagnostics_undercurl, undercurl = cfg.diagnostics_undercurl, sp = c.purple},
+  DiagnosticUnderlineInfo = {underline = not cfg.diagnostics_undercurl, undercurl = cfg.diagnostics_undercurl, sp = c.blue},
+  DiagnosticUnderlineWarn = {underline = not cfg.diagnostics_undercurl, undercurl = cfg.diagnostics_undercurl, sp = c.yellow},
   LspReferenceText = {underline = true },
   LspReferenceWrite = {underline = true },
   LspReferenceRead = {underline = true }
+}
+
+hl.plugins.lsp.LspDiagnosticsDefaultError = hl.plugins.lsp.DiagnosticError
+hl.plugins.lsp.LspDiagnosticsDefaultHint = hl.plugins.lsp.DiagnosticHint
+hl.plugins.lsp.LspDiagnosticsDefaultInformation = hl.plugins.lsp.DiagnosticInfo
+hl.plugins.lsp.LspDiagnosticsDefaultWarning = hl.plugins.lsp.DiagnosticWarn
+hl.plugins.lsp.LspDiagnosticsUnderlineError = hl.plugins.lsp.DiagnosticUnderlineError
+hl.plugins.lsp.LspDiagnosticsUnderlineHint = hl.plugins.lsp.DiagnosticUnderlineHint
+hl.plugins.lsp.LspDiagnosticsUnderlineInformation = hl.plugins.lsp.DiagnosticUnderlineInfo
+hl.plugins.lsp.LspDiagnosticsUnderlineWarning = hl.plugins.lsp.DiagnosticUnderlineWarn
+
+hl.plugins.lspsaga = {
+  LspSagaDiagnosticBorder = colors.Fg_dark,
+  LspSagaDiagnosticHeader = { fg = c.purple },
+  LspSagaDiagnosticTruncateLine = colors.Fg_dark,
+  LspFloatWinBorder = colors.Fg_dark,
+  LspSagaHoverBorder = colors.Fg_dark,
+  LspSagaDefPreviewBorder = colors.Fg_dark,
+  LspLinesDiagBorder = colors.Fg_dark,
+  LspSagaBorderTitle = { link = "Title" },
+  LspSagaFinderSelection = { link = "Search" },
+  LspSagaShTruncateLine = colors.Fg_dark,
+  LspSagaDocTruncateLine = colors.Fg_dark,
+  LineDiagTuncateLine = colors.Fg_dark,
+  LspSagaCodeActionTitle = { link = "Title" },
+  LspSagaCodeActionTruncateLine = colors.Fg_dark,
+  LspSagaCodeActionContent = { link = "Normal" },
+  LspSagaRenamePromptPrefix = { fg = c.purple },
+}
+
+hl.plugins.cmp = {
+  CmpItemAbbr = colors.Fg,
+  CmpItemAbbrDeprecated = colors.Fg,
+  CmpItemAbbrMatch = colors.Cyan,
+  CmpItemAbbrMatchFuzzy = colors.Cyan,
+  CmpItemKind = colors.Purple,
+  CmpItemMenu = colors.LightGrey,
 }
 
 hl.plugins.gitgutter = {
@@ -265,6 +302,7 @@ hl.plugins.diffview = {
   DiffviewStatusDeleted = colors.Red,
   DiffviewStatusBroken = colors.Red
 }
+--]]
 
 hl.plugins.gitsigns = {
   GitSignsAdd = colors.Green,
@@ -280,18 +318,19 @@ hl.plugins.gitsigns = {
 
 hl.plugins.nvim_tree = {
   NvimTreeNormal = { fg = c.fg, bg = c.bg_d },
-  NvimTreeEndOfBuffer = { fg = c.bg2, bg = c.bg_d },
-  NvimTreeRootFolder = { fg = c.green, bold =true},
+  NvimTreeVertSplit = { fg = c.bg_d, bg = c.bg_d },
+  NvimTreeEndOfBuffer = { fg = cfg.hide_ending_tildes and c.bg_d or c.bg2, bg = c.bg_d },
+  NvimTreeRootFolder = { fg = c.orange, bold = true },
   NvimTreeGitDirty = colors.Yellow,
   NvimTreeGitNew = colors.Green,
   NvimTreeGitDeleted = colors.Red,
   NvimTreeSpecialFile = { fg = c.yellow, underline=true },
-  NvimTreeIndentMarker = colors.Fg,
+  NvimTreeIndentMarker = colors.Grey,
   NvimTreeImageFile = { fg = c.dark_purple },
   NvimTreeSymlink = colors.Purple,
-  NvimTreeFolderName= colors.Blue
+  NvimTreeFolderIcon = { fg = c.blue },
+  NvimTreeFolderName = colors.Blue,
 }
---]]
 
 hl.plugins.telescope = {
   TelescopeBorder = colors.Fg_dark,
@@ -302,6 +341,20 @@ hl.plugins.telescope = {
   TelescopePromptPrefix = colors.Blue,
   TelescopeSelection =  { bg = c.bg2 },
   TelescopeSelectionCaret = colors.Blue
+}
+
+hl.plugins.symbols_outline = {
+  FocusedSymbol = { fg = c.bg1, bg = c.yellow, bold = true },
+}
+
+hl.plugins.ts_rainbow = {
+  rainbowcol1 = colors.Red,
+  rainbowcol2 = colors.Orange,
+  rainbowcol3 = colors.Yellow,
+  rainbowcol4 = colors.Green,
+  rainbowcol5 = colors.Cyan,
+  rainbowcol6 = colors.Blue,
+  rainbowcol7 = colors.Purple,
 }
 
 hl.langs.markdown = {

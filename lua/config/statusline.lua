@@ -1,6 +1,4 @@
-local lsp = require 'feline.providers.lsp'
 local vi_mode_utils = require 'feline.providers.vi_mode'
-local file = require 'feline.providers.file'
 
 local M = {}
 
@@ -62,30 +60,6 @@ local function file_os_info()
     icon = icons.windows
   end
   return icon
-end
-
-local function lsp_diagnostics_info()
-  return {
-    errs = lsp.get_diagnostics_count('Error'),
-    warns = lsp.get_diagnostics_count('Warning'),
-    infos = lsp.get_diagnostics_count('Information'),
-    hints = lsp.get_diagnostics_count('Hint')
-  }
-end
-
-local function diag_enable(f, s)
-  return function()
-    local diag = f()[s]
-    return diag and diag ~= 0
-  end
-end
-
-local function diag_of(f, s)
-  local icon = icons[s]
-  return function()
-    local diag = f()[s]
-    return icon .. diag
-  end
 end
 
 local comps = {
@@ -165,49 +139,42 @@ local comps = {
       style = 'bold'
     }
   },
-  diagnos = {
-    err = {
-      provider = diag_of(lsp_diagnostics_info, 'errs'),
-      left_sep = ' ',
-      enabled = diag_enable(lsp_diagnostics_info, 'errs'),
-      hl = {
-        fg = colors.red
-      }
-    },
-    warn = {
-      provider = diag_of(lsp_diagnostics_info, 'warns'),
-      left_sep = ' ',
-      enabled = diag_enable(lsp_diagnostics_info, 'warns'),
-      hl = {
-        fg = colors.yellow
-      }
-    },
-    info = {
-      provider = diag_of(lsp_diagnostics_info, 'infos'),
-      left_sep = ' ',
-      enabled = diag_enable(lsp_diagnostics_info, 'infos'),
-      hl = {
-        fg = colors.blue
-      }
-    },
-    hint = {
-      provider = diag_of(lsp_diagnostics_info, 'hints'),
-      left_sep = ' ',
-      enabled = diag_enable(lsp_diagnostics_info, 'hints'),
-      hl = {
-        fg = colors.cyan
-      }
-    },
-  },
   lsp = {
     name = {
       provider = 'lsp_client_names',
       left_sep = ' ',
-      icon = icons.lsp,
       hl = {
         fg = colors.yellow
       }
-    }
+    },
+    error = {
+      provider = 'diagnostic_errors',
+      left_sep = ' ',
+      hl = {
+        fg = colors.red
+      }
+    },
+    warning = {
+      provider = 'diagnostic_warnings',
+      left_sep = ' ',
+      hl = {
+        fg = colors.yellow
+      }
+    },
+    hint = {
+      provider = 'diagnostic_hints',
+      left_sep = ' ',
+      hl = {
+        fg = colors.cyan
+      }
+    },
+    info = {
+      provider = 'diagnostic_info',
+      left_sep = ' ',
+      hl = {
+        fg = colors.blue
+      }
+    },
   },
   git = {
     branch = {
@@ -270,13 +237,14 @@ components.active[1] = {
   comps.git.change,
   comps.git.remove,
   -- comps.lsp.name,
-  -- comps.diagnos.err,
-  -- comps.diagnos.warn,
-  -- comps.diagnos.hint,
-  -- comps.diagnos.info
+  comps.lsp.error,
+  comps.lsp.warning,
+  comps.lsp.hint,
+  comps.lsp.info,
 }
 -- middle
-components.active[2] = {}
+components.active[2] = {
+}
 -- right
 components.active[3] = {
   comps.file_type,
@@ -294,41 +262,11 @@ components.inactive[1] = {
 }
 
 M.setup = function()
-  vim.cmd([[autocmd User CocGitStatusChange lua require('config.statusline').update_gitsigns()]])
-
   require'feline'.setup {
     colors = colors,
     components = components,
     vi_mode_colors = vi_mode_colors,
-    force_inactive = {
-      filetypes = {
-        'coc-explorer',
-        'NvimTree',
-        'packer',
-      },
-      buftypes = {'terminal'},
-      bufnames = {}
-    }
   }
-end
-
--- transform coc_git_status to gitsigns table
-M.update_gitsigns = function()
-  local branch = vim.g.coc_git_status
-  if branch == nil then return end
-
-  local head = string.gsub(branch, '%s', '')
-  local dict = {added = 0, removed = 0, changed = 0}
-
-  local changes = vim.b.coc_git_status
-  if changes then
-    dict.added = tonumber(string.match(changes, '%+(%d+)')) or 0
-    dict.removed = tonumber(string.match(changes, '%-(%d+)')) or 0
-    dict.changed = tonumber(string.match(changes, '%~(%d+)')) or 0
-  end
-
-  vim.api.nvim_buf_set_var(0, 'gitsigns_head', head)
-  vim.api.nvim_buf_set_var(0, 'gitsigns_status_dict', dict)
 end
 
 return M

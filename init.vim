@@ -1,8 +1,10 @@
 
 " diable unused remote-plugins provider
 let g:loaded_python_provider = 0 " disable python2 provider
+let g:loaded_python3_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
+let g:loaded_node_provider = 0
 
 "------------------ global options -------------------------
 " Use the directory of the related buffer
@@ -55,6 +57,7 @@ set synmaxcol=1000
 set cursorline
 set termguicolors
 
+set completeopt=menu,menuone,noselect
 " colorscheme onedark
 
 "---------------  key maps ---------------------
@@ -122,7 +125,7 @@ let g:vim_markdown_conceal = 0
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 nnoremap <leader>g <cmd>Telescope live_grep<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
-nnoremap <leader>t <cmd>Telescope coc document_symbols<cr>
+nnoremap <leader>t <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <D-p> <cmd>Telescope find_files<cr>
 nnoremap <C-p> <cmd>Telescope find_files<cr>
 nnoremap <D-S-p> <cmd>Telescope commands<cr>
@@ -134,6 +137,10 @@ nnoremap <silent> <leader>lg :LazyGit<CR>
 let g:any_jump_grouping_enabled = 1
 nnoremap <leader>j :AnyJump<CR>
 "}}}
+"
+"--------- copilot --------{{{
+imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
 
 "------ golang is special ----------
 au FileType go setlocal noexpandtab softtabstop=4 tabstop=4 shiftwidth=4
@@ -186,100 +193,10 @@ let g:cycle_default_groups = [
       \ ]
 " }}}
 
-"---------- coc ============================================================= {{{
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <silent><expr> <C-l>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ "\<C-j>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <D-i> <Plug>(coc-definition)
-nmap <silent> <C-LeftMouse> <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>re <Plug>(coc-refactor)
-nmap <leader>== <Plug>(coc-format)
-vmap <leader>=  <Plug>(coc-format-selected)
-
-" Applying codeAction to the selected region.
-xmap <leader>la  <Plug>(coc-codeaction-selected)
-nmap <leader>la  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>lc  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>lf  <Plug>(coc-fix-current)
-
-" Use <C-x><C-o> to complete 'word', 'emoji' and 'include' sources
-" imap <silent> <C-x><C-o> <Plug>(coc-complete-custom)
-
-" Use <C-l> for trigger snippet expand.
-" imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-" vmap <C-j> <Plug>(coc-snippets-select)
-
-let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-let g:coc_global_extensions = [
-      \ 'coc-explorer',
-      \ 'coc-word',
-      \ 'coc-snippets',
-      \ 'coc-json',
-      \ 'coc-solargraph',
-      \ 'coc-tsserver',
-      \ 'coc-eslint',
-      \ 'coc-pairs',
-      \ 'coc-lists',
-      \ 'coc-git',
-      \ 'coc-translator',
-      \ 'coc-highlight',
-      \ 'coc-yank',
-      \ 'coc-tabnine',
-      \ ]
-nmap <Leader>e <Plug>(coc-translator-p)
-" coc-explorer
-nnoremap <leader>p :CocCommand explorer<CR>
-"}}}
+" ----------- nvim-tree ------------
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_disable_window_picker = 1
+nnoremap <leader>p :NvimTreeFindFileToggle<CR>
 
 
 " ----------- Terminal --------------
