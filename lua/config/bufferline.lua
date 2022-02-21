@@ -42,8 +42,8 @@ require('bufferline').setup {
       if win_ids[1] then
         vim.fn.win_gotoid(win_ids[1])
       else
-        -- vim.cmd(string.format("tabe %s", vim.api.nvim_buf_get_name(buf_id)))
-        vim.cmd(string.format("vertical sbuffer %d", buf_id))
+        vim.cmd(string.format("tabe %s", vim.api.nvim_buf_get_name(buf_id)))
+        -- vim.cmd(string.format("vertical sbuffer %d", buf_id))
       end
     end,
     middle_mouse_command = nil,
@@ -61,7 +61,7 @@ require('bufferline').setup {
     max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
     tab_size = 15,
     diagnostics = false,
-    offsets = {{filetype = 'coc-explorer', text = ''}},
+    offsets = {{filetype = 'NvimTree', text = 'File Explorer'}},
     show_buffer_icons = true,
     show_buffer_close_icons = true,
     show_close_icon = true,

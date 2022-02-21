@@ -239,6 +239,9 @@ hl.plugins.lspsaga = {
   LspSagaDiagnosticHeader = { fg = c.purple },
   LspSagaDiagnosticTruncateLine = colors.Fg_dark,
   LspFloatWinBorder = colors.Fg_dark,
+  LspSagaHoverBorder = colors.Fg_dark,
+  LspSagaDefPreviewBorder = colors.Fg_dark,
+  LspLinesDiagBorder = colors.Fg_dark,
   LspSagaBorderTitle = { link = "Title" },
   LspSagaFinderSelection = { link = "Search" },
   LspSagaShTruncateLine = colors.Fg_dark,
@@ -345,13 +348,13 @@ hl.plugins.symbols_outline = {
 }
 
 hl.plugins.ts_rainbow = {
-  rainbowcol1 = colors.Grey,
-  rainbowcol2 = colors.Yellow,
-  rainbowcol3 = colors.Blue,
-  rainbowcol4 = colors.Orange,
-  rainbowcol5 = colors.Purple,
-  rainbowcol6 = colors.Green,
-  rainbowcol7 = colors.Red
+  rainbowcol1 = colors.Red,
+  rainbowcol2 = colors.Orange,
+  rainbowcol3 = colors.Yellow,
+  rainbowcol4 = colors.Green,
+  rainbowcol5 = colors.Cyan,
+  rainbowcol6 = colors.Blue,
+  rainbowcol7 = colors.Purple,
 }
 
 hl.langs.markdown = {

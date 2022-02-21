@@ -69,8 +69,7 @@ require('packer').startup({function(use)
     config = [[require('config.telescope')]],
   }
 
-  use { "onsails/lspkind-nvim", event = 'User PackLoad' }
-  use { "hrsh7th/nvim-cmp", config = [[require('config.cmp')]], after = "lspkind-nvim" }
+  use { "hrsh7th/nvim-cmp", config = [[require('config.cmp')]], event = 'User PackLoad' }
   use { "hrsh7th/cmp-path", after = "nvim-cmp" }
   use { "hrsh7th/cmp-cmdline", after = "nvim-cmp" }
   use { 'tzachar/cmp-tabnine', run = './install.sh', after = "nvim-cmp" }
@@ -88,6 +87,7 @@ require('packer').startup({function(use)
   use { "neovim/nvim-lspconfig", after = "cmp-nvim-lsp" }
   use { 'tami5/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
 
+  use { 'windwp/nvim-autopairs', config = [[require('config.misc').autopairs()]], after = 'nvim-treesitter' }
   use {
     'lewis6991/gitsigns.nvim',
     wants = { 'plenary.nvim' },

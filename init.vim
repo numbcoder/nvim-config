@@ -1,8 +1,10 @@
 
 " diable unused remote-plugins provider
 let g:loaded_python_provider = 0 " disable python2 provider
+let g:loaded_python3_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
+let g:loaded_node_provider = 0
 
 "------------------ global options -------------------------
 " Use the directory of the related buffer
@@ -44,7 +46,7 @@ set pumblend=10
 set lazyredraw
 set jumpoptions=stack
 " Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=600
+set updatetime=400
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 " always show signcolumns
@@ -123,7 +125,7 @@ let g:vim_markdown_conceal = 0
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 nnoremap <leader>g <cmd>Telescope live_grep<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
-nnoremap <leader>t <cmd>Telescope coc document_symbols<cr>
+nnoremap <leader>t <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <D-p> <cmd>Telescope find_files<cr>
 nnoremap <C-p> <cmd>Telescope find_files<cr>
 nnoremap <D-S-p> <cmd>Telescope commands<cr>

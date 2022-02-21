@@ -1,3 +1,4 @@
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {
   disable_netrw       = true,
   hijack_netrw        = true,
@@ -6,7 +7,7 @@ require'nvim-tree'.setup {
   auto_close          = true,
   open_on_tab         = false,
   hijack_cursor       = false,
-  update_cwd          = false,
+  update_cwd          = true,
   update_to_buf_dir   = {
     enable = true,
     auto_open = true,
@@ -46,7 +47,9 @@ require'nvim-tree'.setup {
     auto_resize = true,
     mappings = {
       custom_only = false,
-      list = {}
+      list = {
+        { key = "?", cb = tree_cb("toggle_help") },
+      }
     },
     number = false,
     relativenumber = false
