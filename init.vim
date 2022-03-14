@@ -153,51 +153,9 @@ let g:ctrlsf_ackprg = 'rg'
 let g:ctrlsf_auto_close = 0
 nnoremap <leader>/ :CtrlSF<space>
 
-"-------- vim-cycle ====================================================== {{{
-let g:cycle_no_mappings = 1
-nnoremap <silent> <Plug>CycleFallbackNext <C-A>
-nnoremap <silent> <Plug>CycleFallbackPrev <C-X>
-nmap <silent> <c-a> <Plug>CycleNext
-vmap <silent> <c-a> <Plug>CycleNext
-nmap <silent> <c-x> <Plug>CyclePrev
-vmap <silent> <c-x> <Plug>CyclePrev
-let g:cycle_default_groups = [
-      \ [['true', 'false']],
-      \ [['yes', 'no']],
-      \ [['on', 'off']],
-      \ [['+', '-']],
-      \ [['>', '<']],
-      \ [['==', '!=']],
-      \ [['and', 'or']],
-      \ [["in", "out"]],
-      \ [["up", "down"]],
-      \ [["min", "max"]],
-      \ [["get", "set"]],
-      \ [["add", "remove"]],
-      \ [["to", "from"]],
-      \ [["read", "write"]],
-      \ [["only", "except"]],
-      \ [["exclude", "include"]],
-      \ [["asc", "desc"]],
-      \ [["first", "last"]],
-      \ [["if", "unless"]],
-      \ [["blank", "present"]],
-      \ [["while", "until"]],
-      \ [["foreign_key", "primary_key"]],
-      \ [['是', '否']],
-      \ [['":"', "':'"], 'sub_pairs'],
-      \ [['{:}', '[:]', '(:)'], 'sub_pairs'],
-      \ [['（:）', '「:」', '『:』'], 'sub_pairs'],
-      \ [['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-      \   'Friday', 'Saturday'], 'hard_case', {'name': 'Days'}],
-      \ ]
-" }}}
-
 " ----------- nvim-tree ------------
 let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_disable_window_picker = 1
 nnoremap <leader>p :NvimTreeFindFileToggle<CR>
-
 
 " ----------- Terminal --------------
 " Make escape work in the Neovim terminal.
@@ -213,17 +171,5 @@ autocmd BufEnter term://* startinsert!
 " tnoremap <C-k> <C-\><C-N><C-w>k
 " tnoremap <C-l> <C-\><C-N><C-w>l
 
-"----------------------- hlslens -------------------------------
-noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR>
-            \<Cmd>lua require('hlslens').start()<CR>
-noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR>
-            \<Cmd>lua require('hlslens').start()<CR>
-noremap * *<Cmd>lua require('hlslens').start()<CR>
-noremap # #<Cmd>lua require('hlslens').start()<CR>
-noremap g* g*<Cmd>lua require('hlslens').start()<CR>
-noremap g# g#<Cmd>lua require('hlslens').start()<CR>
-
 " source lua
 lua require('init')
-
-" filetype on

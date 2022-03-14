@@ -95,6 +95,11 @@ require('packer').startup({function(use)
     event = 'User PackLoad'
   }
 
+  use {
+    'monaqa/dial.nvim',
+    keys = {{'n', '<C-a>'}, {'n', '<C-x>'}},
+    config = [[require('config.misc').dial()]]
+  }
   use { 'github/copilot.vim', event = 'User PackLoad' }
 
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
@@ -102,7 +107,7 @@ require('packer').startup({function(use)
   use { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' }
 
   use { 'tpope/vim-commentary', keys = {'gcc'} }
-  use { 'bootleq/vim-cycle', keys = {{'n', '<C-a>'}, {'n', '<C-x>'}} }
+
   use { 'machakann/vim-sandwich', keys = {{'n', 's'}, {'v', 's'}} }
   use { 'mg979/vim-visual-multi', keys = {'<C-n>'} }
   use {
