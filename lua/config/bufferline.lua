@@ -61,7 +61,7 @@ require('bufferline').setup {
     max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
     tab_size = 15,
     diagnostics = false,
-    offsets = {{filetype = 'NvimTree', text = 'File Explorer'}},
+    offsets = {{filetype = 'NvimTree', text = 'File Explorer', highlight = 'Directory'}},
     show_buffer_icons = true,
     show_buffer_close_icons = true,
     show_close_icon = true,
@@ -70,6 +70,7 @@ require('bufferline').setup {
     separator_style = 'thin',
     enforce_regular_tabs = false,
     always_show_bufferline = false,
+    sort_by = "tabs",
   },
   highlights = {
     background = {

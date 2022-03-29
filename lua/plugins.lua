@@ -7,19 +7,25 @@ end
 --]]
 
 local M = {}
+
+-- impatient needs to be setup before any other lua plugin is loaded
+vim.cmd [[packadd impatient.nvim]]
+require('impatient')
+
 -- fire PackLoad event
 vim.cmd [[au VimEnter * ++once lua require('plugins').pack_load()]]
 vim.cmd [[packadd packer.nvim]]
 
 require('packer').startup({function(use)
   -- Packer can manage itself
-  use { 'wbthomason/packer.nvim', event = 'User PackLoad' }
+  use { 'wbthomason/packer.nvim' }
+  use { 'lewis6991/impatient.nvim' }
   use { 'nvim-lua/plenary.nvim' }
 
   use {
     "nathom/filetype.nvim",
     config = [[require('config.misc').filetype()]],
-    event = 'User PackLoad',
+    event = 'VimEnter',
   }
 
   use {

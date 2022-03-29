@@ -110,7 +110,13 @@ local comps = {
     }
   },
   file_type = {
-    provider = 'file_type',
+    provider = {
+      name = "file_type",
+      opts = {
+        filetype_icon = true,
+        case = "titlecase",
+      },
+    },
     left_sep = ' ',
     hl = {
       fg = colors.blue,
@@ -262,8 +268,9 @@ components.inactive[1] = {
 }
 
 M.setup = function()
+  -- vim.o.laststatus = 3
   require'feline'.setup {
-    colors = colors,
+    theme = colors,
     components = components,
     vi_mode_colors = vi_mode_colors,
   }

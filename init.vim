@@ -81,9 +81,7 @@ nnoremap <C-l> <C-w>l
 vnoremap < <gv
 vnoremap > >gv
 
-" 将光标移至行首
 nnoremap H ^
-" 将光标移至行尾
 nnoremap L $
 
 " readline style for insert mode. copy from tpope/vim-rsi
@@ -105,7 +103,7 @@ if has("mac")
   nmap ¬ <M-k>
 endif
 
-" 把 CTRL-S 映射为 保存
+" map contrl-s to save
 inoremap <C-S> <C-C>:w<CR>
 inoremap <D-s> <esc>:w<cr>
 noremap :W :w<CR>
