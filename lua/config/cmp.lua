@@ -83,6 +83,7 @@ cmp.setup({
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'cmp_tabnine' },
     { name = 'snippy' },
     { name = 'path' },
@@ -127,8 +128,8 @@ cmp.setup.cmdline(':', {
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
--- cmp.setup.cmdline('/', {
---   sources = {
---     { name = 'buffer' }
---   }
--- })
+cmp.setup.cmdline('/', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' }
+  })
+})

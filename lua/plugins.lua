@@ -52,7 +52,7 @@ require('packer').startup({function(use)
     requires = { {'p00f/nvim-ts-rainbow'} },
     run = ':TSUpdate',
     config = [[require('config.treesitter')]],
-    ft = {'ruby', 'javascript', 'json', 'lua'}
+    event = 'User PackLoad'
   }
 
   use {
@@ -90,6 +90,8 @@ require('packer').startup({function(use)
   }
 
   use { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" }
+  use { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" }
+  use { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" }
   use { "neovim/nvim-lspconfig", after = "cmp-nvim-lsp" }
   use { 'tami5/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
 
@@ -106,7 +108,7 @@ require('packer').startup({function(use)
     keys = {{'n', '<C-a>'}, {'n', '<C-x>'}},
     config = [[require('config.misc').dial()]]
   }
-  use { 'github/copilot.vim', event = 'User PackLoad' }
+  use { 'github/copilot.vim' }
 
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
   use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }

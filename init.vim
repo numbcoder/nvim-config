@@ -137,8 +137,8 @@ nnoremap <leader>j :AnyJump<CR>
 "}}}
 "
 "--------- copilot --------{{{
-imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
-let g:copilot_no_tab_map = v:true
+" imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+" let g:copilot_no_tab_map = v:true
 
 "------ golang is special ----------
 au FileType go setlocal noexpandtab softtabstop=4 tabstop=4 shiftwidth=4
@@ -154,6 +154,14 @@ nnoremap <leader>/ :CtrlSF<space>
 " ----------- nvim-tree ------------
 let g:nvim_tree_indent_markers = 1
 nnoremap <leader>p :NvimTreeFindFileToggle<CR>
+
+" ----------- vim-visual-multi ------------
+let g:VM_maps = {}
+let g:VM_maps["Select Cursor Down"] = '<M-C-Down>'
+let g:VM_maps["Select Cursor Up"]   = '<M-C-Up>'
+nmap <C-LeftMouse> <Plug>(VM-Mouse-Cursor)
+nmap <M-RightMouse> <Plug>(VM-Mouse-Word)
+nmap <M-C-LeftMouse> <Plug>(VM-Mouse-Column)
 
 " ----------- Terminal --------------
 " Make escape work in the Neovim terminal.
