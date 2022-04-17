@@ -1,25 +1,6 @@
 local M = {}
 local keymap = vim.api.nvim_set_keymap
 
--- filetype
-M.filetype = function()
-  local ft = require('filetype')
-  ft.setup({
-    overrides = {
-      extensions = {
-        axlsx = 'ruby',
-      },
-    }
-  })
-  ft.resolve()
-  vim.cmd [[
-    augroup filetypedetect
-      au!
-      au BufNewFile,BufRead * lua require('filetype').resolve()
-    augroup END
-  ]]
-end
-
 -- gitsigns
 M.gitsigns = function()
   require('gitsigns').setup({

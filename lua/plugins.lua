@@ -23,12 +23,6 @@ require('packer').startup({function(use)
   use { 'nvim-lua/plenary.nvim' }
 
   use {
-    "nathom/filetype.nvim",
-    config = [[require('config.misc').filetype()]],
-    event = 'VimEnter',
-  }
-
-  use {
     'kyazdani42/nvim-web-devicons',
     config = [[require('config.devicons')]],
   }
@@ -108,7 +102,7 @@ require('packer').startup({function(use)
     keys = {{'n', '<C-a>'}, {'n', '<C-x>'}},
     config = [[require('config.misc').dial()]]
   }
-  use { 'github/copilot.vim' }
+  -- use { 'github/copilot.vim' }
 
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
   use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }
