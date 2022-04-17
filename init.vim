@@ -152,7 +152,6 @@ let g:ctrlsf_auto_close = 0
 nnoremap <leader>/ :CtrlSF<space>
 
 " ----------- nvim-tree ------------
-let g:nvim_tree_indent_markers = 1
 nnoremap <leader>p :NvimTreeFindFileToggle<CR>
 
 " ----------- vim-visual-multi ------------
