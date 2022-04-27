@@ -60,6 +60,9 @@ set termguicolors
 set completeopt=menu,menuone,noselect
 " colorscheme onedark
 
+" highlight on yank
+au TextYankPost * silent! lua vim.highlight.on_yank()
+
 "---------------  key maps ---------------------
 " map leader to space
 let mapleader = "\<Space>"
@@ -116,7 +119,7 @@ nnoremap <D-S-}> :tabnext<CR>
 
 " --- markdown -------------
 let g:vim_markdown_folding_disabled=1
-let g:vim_markdown_fenced_languages = ['bash=sh', 'ruby', 'javascript']
+let g:vim_markdown_fenced_languages = ['bash=sh', 'ruby', 'javascript', 'lua']
 let g:vim_markdown_conceal = 0
 
 "------------- telescope ------------

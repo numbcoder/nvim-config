@@ -65,3 +65,11 @@ telescope.setup{
 
 -- Extensions
 telescope.load_extension('fzf')
+
+
+-- telescope previewer use plenary to detect filetype
+require('plenary.filetype').add_table({
+  extension = {
+    ['axlsx'] = 'ruby',
+  },
+})
