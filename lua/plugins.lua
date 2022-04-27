@@ -6,14 +6,21 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 --]]
 
-local M = {}
-
 -- impatient needs to be setup before any other lua plugin is loaded
 vim.cmd [[packadd impatient.nvim]]
 require('impatient')
 
--- fire PackLoad event
-vim.cmd [[au VimEnter * ++once lua require('plugins').pack_load()]]
+-- defer fire User PackLoad event
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  once = true,
+  callback = function()
+    vim.defer_fn(function()
+      vim.api.nvim_exec_autocmds("User", {pattern = "PackLoad"})
+    end, 5)
+  end,
+})
+
 vim.cmd [[packadd packer.nvim]]
 
 require('packer').startup({function(use)
@@ -143,13 +150,4 @@ config = {
     open_fn = require('packer.util').float,
   }
 }})
-
--- defer fire PackLoad event
-M.pack_load = function()
-  vim.defer_fn(function()
-    vim.cmd [[doautocmd User PackLoad]]
-  end, 5)
-end
-
-return M
 
