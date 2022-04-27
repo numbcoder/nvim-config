@@ -50,6 +50,14 @@ M.autopairs = function()
   npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
 end
 
+-- Comment.nvim
+M.comment = function()
+  require('Comment').setup({
+    -- ignore empty lines
+    -- ignore = '^$',
+  })
+end
+
 -- dial.nvim
 M.dial = function()
   local augend = require("dial.augend")

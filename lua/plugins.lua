@@ -109,13 +109,17 @@ require('packer').startup({function(use)
     keys = {{'n', '<C-a>'}, {'n', '<C-x>'}},
     config = [[require('config.misc').dial()]]
   }
+
+  use {
+    'numToStr/Comment.nvim',
+    keys = {'gcc', 'gbc'},
+    config = [[require('config.misc').comment()]]
+  }
   -- use { 'github/copilot.vim' }
 
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
   use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }
   use { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' }
-
-  use { 'tpope/vim-commentary', keys = {'gcc'} }
 
   use { 'machakann/vim-sandwich', keys = {{'n', 's'}, {'v', 's'}} }
   use { 'mg979/vim-visual-multi', keys = {'<C-n>'} }
