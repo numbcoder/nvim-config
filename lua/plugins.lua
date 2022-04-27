@@ -78,6 +78,7 @@ require('packer').startup({function(use)
 
   use { "hrsh7th/nvim-cmp", config = [[require('config.cmp')]], event = 'User PackLoad' }
   use { "hrsh7th/cmp-path", after = "nvim-cmp" }
+  use { "hrsh7th/cmp-buffer", after = "nvim-cmp" }
   use { "hrsh7th/cmp-cmdline", after = "nvim-cmp" }
   use { 'tzachar/cmp-tabnine', run = './install.sh', after = "nvim-cmp" }
 

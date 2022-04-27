@@ -42,7 +42,7 @@ cmp.setup({
       require('snippy').expand_snippet(args.body)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ['<Tab>'] = cmp.mapping(function(fallback)
       local snippy = require('snippy')
       if cmp.visible() then
@@ -80,7 +80,7 @@ cmp.setup({
       c = cmp.mapping.close(),
     }),
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
-  },
+  }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
@@ -88,7 +88,18 @@ cmp.setup({
     { name = 'snippy' },
     { name = 'path' },
   }, {
-    -- { name = 'buffer' },
+    {
+      name = 'buffer',
+      option = {
+        indexing_interval = 200,
+        max_indexed_line_length = 500,
+        get_bufnrs = function()
+          return vim.tbl_filter(function(buf)
+              return vim.api.nvim_buf_line_count(buf) < 500
+            end, vim.api.nvim_list_bufs())
+        end
+      },
+    },
   }),
   formatting = {
     format = function(entry, vim_item)
@@ -103,6 +114,7 @@ cmp.setup({
         snippy = "[SNP]",
         cmp_tabnine = "[TN]",
         path = "[Path]",
+        buffer = "[Buf]",
       })[entry.source.name]
       return vim_item
     end
@@ -112,8 +124,14 @@ cmp.setup({
   },
 })
 
+-- disable in csv
+cmp.setup.filetype({ 'csv', 'txt' }, {
+  sources = {}
+})
+
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
@@ -129,7 +147,20 @@ cmp.setup.cmdline(':', {
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp_document_symbol' }
+    { name = 'nvim_lsp_document_symbol' },
+    {
+      name = 'buffer',
+      option = {
+        indexing_interval = 200,
+        max_indexed_line_length = 500,
+        get_bufnrs = function()
+          return vim.tbl_filter(function(buf)
+            return vim.api.nvim_buf_line_count(buf) < 500
+          end, vim.api.nvim_list_bufs())
+        end
+      },
+    },
   })
 })
