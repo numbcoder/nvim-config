@@ -41,11 +41,11 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>", opts)
 
   -- Set some key bindings conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>==", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  if client.server_capabilities.documentFormattingProvider then
+    buf_set_keymap("n", "<space>==", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", opts)
   end
-  if client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("x", "<space>==", "<cmd>lua vim.lsp.buf.range_formatting()<CR><ESC>", opts)
+  if client.server_capabilities.documentRangeFormattingProvider then
+    buf_set_keymap("v", "<space>==", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 end
 
