@@ -35,7 +35,7 @@ require('packer').startup({function(use)
   }
 
   use {
-    'famiu/feline.nvim',
+    'feline-nvim/feline.nvim',
     wants = {'nvim-web-devicons'},
     config = [[require('config.statusline').setup()]],
     event = 'User PackLoad',
@@ -128,6 +128,13 @@ require('packer').startup({function(use)
     'kevinhwang91/nvim-hlslens',
     keys = {'n', '/', '*'},
     config = [[require('config.misc').hlslens()]],
+  }
+  use {
+    'kevinhwang91/nvim-ufo',
+    requires = 'kevinhwang91/promise-async',
+    wants = { 'promise-async' },
+    config = [[require('config.misc').ufo()]],
+    event = 'User PackLoad'
   }
 
   use {

@@ -42,11 +42,33 @@ local on_attach = function(client, bufnr)
 
   -- Set some key bindings conditional on server capabilities
   if client.server_capabilities.documentFormattingProvider then
-    buf_set_keymap("n", "<space>==", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", opts)
+    buf_set_keymap("n", "<space>==", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   end
   if client.server_capabilities.documentRangeFormattingProvider then
     buf_set_keymap("v", "<space>==", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
+
+  vim.api.nvim_create_augroup('lsp_attach_group', {})
+  -- highlight symbol under cursor
+  -- if client.server_capabilities.documentHighlightProvider then
+  --   vim.api.nvim_create_autocmd('CursorHold', {
+  --     group = 'lsp_attach_group',
+  --     buffer = 0,
+  --     callback = vim.lsp.buf.document_highlight,
+  --   })
+  --   vim.api.nvim_create_autocmd('CursorMoved', {
+  --     group = 'lsp_attach_group',
+  --     buffer = 0,
+  --     callback = vim.lsp.buf.clear_references,
+  --   })
+  -- end
+
+  -- show diagnostic
+  vim.api.nvim_create_autocmd("CursorHold", {
+    group = 'lsp_attach_group',
+    buffer = 0,
+    callback = function() require('lspsaga.diagnostic').show_line_diagnostics(nil, nil, 0) end,
+  })
 end
 
 -- diagnostic
@@ -57,7 +79,6 @@ vim.diagnostic.config({
   update_in_insert = false,
   severity_sort = false,
 })
-vim.cmd [[autocmd CursorHold * lua require('lspsaga.diagnostic').show_line_diagnostics(nil, nil, 0)]]
 -- local signs = { Error = "", Warn = "", Hint = "ﯦ", Info = "●" }
 -- for type, icon in pairs(signs) do
 --   local hl = "DiagnosticSign" .. type
@@ -65,6 +86,12 @@ vim.cmd [[autocmd CursorHold * lua require('lspsaga.diagnostic').show_line_diagn
 -- end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+-- fold
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
 
 lspconfig.solargraph.setup({
   on_attach = on_attach,

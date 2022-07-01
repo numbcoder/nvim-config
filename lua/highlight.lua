@@ -74,7 +74,7 @@ hl.common = {
   Directory = {fg = c.blue},
   ErrorMsg = {fg = c.red, bold = true, underline = true},
   WarningMsg = {fg = c.yellow, bold = true},
-  MoreMsg = {fg = c.blue, bold = true},
+  MoreMsg = {fg = c.green, bold = true},
   IncSearch = {fg = c.bg0, bg = c.orange},
   Search = {fg = c.bg0, bg = c.bg_yellow},
   MatchParen = {fg = c.none, bg = c.grey},
