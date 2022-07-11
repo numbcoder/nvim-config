@@ -95,7 +95,7 @@ require('packer').startup({function(use)
   use { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" }
   use { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" }
   use { "neovim/nvim-lspconfig", after = "cmp-nvim-lsp" }
-  use { 'tami5/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
+  use { 'glepnir/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
 
   use { 'windwp/nvim-autopairs', config = [[require('config.misc').autopairs()]], after = 'nvim-treesitter' }
   use {
