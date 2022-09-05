@@ -6,7 +6,7 @@ local on_attach = function(client, bufnr)
   local opts = {noremap = true, silent = true, buffer = bufnr}
   -- Set some key bindings conditional on server capabilities
   if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set("n", "<space>==", vim.lsp.buf.formatting, opts)
+    vim.keymap.set("n", "<space>==", function() vim.lsp.buf.format({async = true}) end, opts)
   end
   if client.server_capabilities.documentRangeFormattingProvider then
     vim.keymap.set("v", "<space>==", vim.lsp.buf.range_formatting, opts)
@@ -90,7 +90,6 @@ vim.keymap.set("n", "gh", require("lspsaga.finder").lsp_finder, opts)
 vim.keymap.set("n", "gd", function() require('telescope.builtin').lsp_definitions({jump_type = 'vsplit'}) end, opts)
 vim.keymap.set("n", "gp", require("lspsaga.definition").preview_definition, opts)
 vim.keymap.set("n", "gr", require("lspsaga.rename").lsp_rename, opts)
-vim.keymap.set("n", "gs", require("lspsaga.signaturehelp").signature_help, opts)
 vim.keymap.set("n", "gx", require("lspsaga.codeaction").code_action, opts)
 vim.keymap.set("v", "gx", function()
   vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
