@@ -143,6 +143,17 @@ require('packer').startup({function(use)
     config = [[require('config.misc').indent_blankline()]],
   }
   use { 'ntpeters/vim-better-whitespace', event = 'User PackLoad' }
+  use {
+    'rcarriga/nvim-notify',
+    event = 'User PackLoad',
+    config = [[ vim.notify = require("notify") ]],
+  }
+  use {
+    'NvChad/nvim-colorizer.lua',
+    ft = {'css', 'html', 'lua'},
+    cmd = 'ColorizerToggle',
+    config = [[require('colorizer').setup()]],
+  }
 
   -- use 'joshdick/onedark.vim'
   -- use {
