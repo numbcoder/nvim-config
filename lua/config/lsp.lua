@@ -88,7 +88,7 @@ require('lspsaga').init_lsp_saga{
 local opts = {noremap = true, silent = true}
 vim.keymap.set("n", "gh", require("lspsaga.finder").lsp_finder, opts)
 vim.keymap.set("n", "gd", function() require('telescope.builtin').lsp_definitions({jump_type = 'vsplit'}) end, opts)
-vim.keymap.set("n", "gp", require("lspsaga.definition").preview_definition, opts)
+vim.keymap.set("n", "gp", require("lspsaga.definition").peek_definition, opts)
 vim.keymap.set("n", "gr", require("lspsaga.rename").lsp_rename, opts)
 vim.keymap.set("n", "gx", require("lspsaga.codeaction").code_action, opts)
 vim.keymap.set("v", "gx", function()

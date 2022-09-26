@@ -69,6 +69,7 @@ hl.common = {
   DiffText = {fg = c.none, bg= c.diff_text},
   DiffAdded = colors.Green,
   DiffRemoved = colors.Red,
+  DiffChanged = colors.Blue,
   DiffFile = colors.Cyan,
   DiffIndexLine = colors.Grey,
   Directory = {fg = c.blue},
@@ -105,7 +106,9 @@ hl.common = {
   Debug = {fg = c.yellow},
   debugPC = {fg = c.bg0, bg = c.green},
   debugBreakpoint = {fg = c.bg0, bg = c.red},
-  ToolbarButton = {fg = c.bg0, bg = c.bg_blue}
+  ToolbarButton = {fg = c.bg0, bg = c.bg_blue},
+  FloatBorder = {fg = c.grey, bg = c.bg1},
+  NormalFloat = {fg = c.fg, bg = c.bg1},
 }
 
 hl.syntax = {
@@ -260,12 +263,6 @@ hl.plugins.cmp = {
   CmpItemAbbrMatchFuzzy = colors.Cyan,
   CmpItemKind = colors.Purple,
   CmpItemMenu = colors.LightGrey,
-}
-
-hl.plugins.gitgutter = {
-  GitGutterAdd = {fg = c.green},
-  GitGutterChange = {fg = c.blue},
-  GitGutterDelete = {fg = c.red},
 }
 
 --[[

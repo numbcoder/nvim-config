@@ -154,6 +154,11 @@ require('packer').startup({function(use)
     cmd = 'ColorizerToggle',
     config = [[require('colorizer').setup()]],
   }
+  use {
+    'stevearc/dressing.nvim',
+    event = 'User PackLoad',
+    config = [[require('config.misc').dressing()]],
+  }
 
   -- use 'joshdick/onedark.vim'
   -- use {

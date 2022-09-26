@@ -124,6 +124,16 @@ M.dial = function()
   keymap("v", "g<C-x>", map.dec_gvisual(), opts)
 end
 
+-- dressing.nvim
+M.dressing = function()
+  require('dressing').setup({
+    input = {
+      anchor = "NW",
+      min_width = { 30, 0.2 },
+    }
+  })
+end
+
 --[[
 M.theme_setup = function()
   require('onedark').setup({
