@@ -7,6 +7,7 @@ require'nvim-tree'.setup {
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = true,
+  select_prompts      = true,
   renderer = {
     indent_markers = {
       enable = true,
@@ -40,8 +41,8 @@ require'nvim-tree'.setup {
     timeout = 500,
   },
   view = {
+    adaptive_size = true,
     width = 40,
-    height = 30,
     hide_root_folder = false,
     side = 'left',
     mappings = {

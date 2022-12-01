@@ -7,8 +7,13 @@ end
 --]]
 
 -- impatient needs to be setup before any other lua plugin is loaded
-vim.cmd [[packadd impatient.nvim]]
+vim.cmd [[
+  packadd impatient.nvim
+  packadd packer.nvim
+  packadd onedarkpro.nvim
+]]
 require('impatient')
+require('config.misc').onedarkpro()
 
 -- defer fire User PackLoad event
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -21,8 +26,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
-vim.cmd [[packadd packer.nvim]]
-
 require('packer').startup({function(use)
   -- Packer can manage itself
   use { 'wbthomason/packer.nvim' }
@@ -30,7 +33,7 @@ require('packer').startup({function(use)
   use { 'nvim-lua/plenary.nvim' }
 
   use {
-    'kyazdani42/nvim-web-devicons',
+    'nvim-tree/nvim-web-devicons',
     config = [[require('config.devicons')]],
   }
 
@@ -57,7 +60,7 @@ require('packer').startup({function(use)
   }
 
   use {
-    'kyazdani42/nvim-tree.lua',
+    'nvim-tree/nvim-tree.lua',
     wants = { 'nvim-web-devicons' },
     config = [[require('config.nvim-tree')]],
     cmd = {'NvimTreeToggle', 'NvimTreeFindFileToggle'}
@@ -122,8 +125,13 @@ require('packer').startup({function(use)
   use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }
   use { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' }
 
-  use { 'machakann/vim-sandwich', keys = {{'n', 's'}, {'v', 's'}} }
+  -- use { 'machakann/vim-sandwich', keys = {{'n', 's'}, {'v', 's'}} }
   use { 'mg979/vim-visual-multi', keys = {'<C-n>'} }
+  use {
+    'kylechui/nvim-surround',
+    keys = {{'n', 's'}, {'v', 's'}},
+    config = [[require('config.misc').surround()]],
+  }
   use {
     'kevinhwang91/nvim-hlslens',
     keys = {'n', '/', '*'},
@@ -160,12 +168,7 @@ require('packer').startup({function(use)
     config = [[require('config.misc').dressing()]],
   }
 
-  -- use 'joshdick/onedark.vim'
-  -- use {
-  --   'ful1e5/onedark.nvim',
-  --   diable = true,
-  --   config = [[require('config.misc').theme_setup()]],
-  -- }
+  use 'olimorris/onedarkpro.nvim'
 
   -- lang
   use { 'vim-ruby/vim-ruby', ft = 'ruby' }

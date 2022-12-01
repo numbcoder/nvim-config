@@ -11,6 +11,21 @@ M.gitsigns = function()
       topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
       changedelete = {hl = 'GitSignsChange', text = '≃', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
     },
+    on_attach = function(bufnr)
+      local gs = package.loaded.gitsigns
+
+      local function map(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
+      end
+
+      map('n', '<leader>lp', gs.preview_hunk)
+      map('n', '<leader>lP', gs.preview_hunk_inline)
+      map('n', '<leader>lb', gs.toggle_current_line_blame)
+      map('n', '<leader>ld', gs.diffthis)
+      map('n', '<leader>lD', function() gs.diffthis('~') end)
+    end
   })
 end
 
@@ -32,7 +47,7 @@ end
 -- nvim-ufo
 M.ufo = function()
   vim.wo.foldcolumn = '0'
-  vim.wo.foldlevel = 10
+  vim.wo.foldlevel = 20
   vim.wo.foldenable = true
 
   require('ufo').setup({
@@ -71,7 +86,11 @@ M.indent_blankline = function()
   require("indent_blankline").setup {
     char = '┊',
     filetype_exclude = {'help', 'NvimTree', 'terminal', 'packer'},
+    use_treesitter = true,
+    show_current_context = true,
     max_indent_increase = 1,
+    char_highlight_list = {'Whitespace'},
+    context_highlight_list = {'Whitespace'},
     show_first_indent_level = false,
     show_trailing_blankline_indent = false,
   }
@@ -128,19 +147,63 @@ end
 M.dressing = function()
   require('dressing').setup({
     input = {
-      anchor = "NW",
-      min_width = { 30, 0.2 },
+      relative = "editor",
+      -- anchor = "NW",
+      min_width = { 50, 0.3 },
     }
   })
 end
 
---[[
-M.theme_setup = function()
-  require('onedark').setup({
-    keywordStyle = "NONE",
-    sidebars = {'coc-explorer'},
+-- nvim-surround
+M.surround = function()
+  require("nvim-surround").setup({
+    keymaps = {
+      normal = "sa",
+      visual = "sa",
+      delete = "sd",
+      change = "sr",
+    },
   })
 end
---]]
+
+-- olimorris/onedarkpro.nvim
+M.onedarkpro = function()
+  require("onedarkpro").setup({
+    dark_theme = 'onedark_vivid',
+    caching = true,
+    plugins = {
+      all = false,
+      native_lsp = true,
+      gitsigns = true,
+      indentline = true,
+      lsp_saga = true,
+      nvim_cmp = true,
+      nvim_notify = true,
+      nvim_tree = true,
+      nvim_ts_rainbow = true,
+      packer = true,
+      telescope = true,
+      toggleterm = true,
+      treesitter = true,
+    },
+    options = {
+      bold = false,
+      cursorline = true,
+    },
+    highlights = {
+      -- editor
+      CursorLineNr = { fg = "${fg}" },
+      -- nvim-tree
+      NvimTreeFolderIcon = { fg = "${blue}" },
+      -- telescope
+      TelescopeSelection = { bg = "${cursorline}", fg = "${fg}" },
+      TelescopeSelectionCaret = { fg = "${blue}" },
+      TelescopeMatching = { fg = "${yellow}" },
+      TelescopePromptPrefix = { fg = "${blue}" },
+    }
+  })
+
+  vim.cmd [[ colorscheme onedarkpro ]]
+end
 
 return M

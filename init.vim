@@ -59,6 +59,8 @@ set termguicolors
 
 set completeopt=menu,menuone,noselect
 " colorscheme onedark
+" turn on linematch for diff
+set diffopt+=linematch:60
 
 " highlight on yank
 au TextYankPost * silent! lua vim.highlight.on_yank()

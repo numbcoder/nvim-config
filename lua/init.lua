@@ -32,7 +32,4 @@ vim.filetype.add({
 
 require('plugins')
 
--- onedark highlight
--- https://github.com/navarasu/onedark.nvim
-require('highlight').setup()
-
+-- require('highlight').setup()
