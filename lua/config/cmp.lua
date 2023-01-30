@@ -1,4 +1,5 @@
 local cmp = require 'cmp'
+local luasnip = require("luasnip")
 
 local kind_icons = {
   Text = "",
@@ -39,16 +40,15 @@ cmp.setup({
   },
   snippet = {
     expand = function(args)
-      require('snippy').expand_snippet(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
     ['<Tab>'] = cmp.mapping(function(fallback)
-      local snippy = require('snippy')
       if cmp.visible() then
         cmp.select_next_item()
-      elseif snippy.can_expand_or_advance() then
-        snippy.expand_or_advance()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
@@ -56,11 +56,10 @@ cmp.setup({
       end
     end, { "i", "s" }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      local snippy = require('snippy')
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif snippy.can_jump(-1) then
-        snippy.previous()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
@@ -68,6 +67,8 @@ cmp.setup({
     ["<C-l>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.confirm({ select = true })
+      elseif luasnip.jumpable(1) then
+        luasnip.jump(1)
       else
         fallback()
       end
@@ -85,7 +86,7 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'cmp_tabnine' },
-    { name = 'snippy' },
+    { name = 'luasnip' },
     { name = 'path' },
   }, {
     {
@@ -105,13 +106,13 @@ cmp.setup({
     format = function(entry, vim_item)
       -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
       if entry.source.name == 'cmp_tabnine' then
-        vim_item.kind = 'ﯦ'
+        vim_item.kind = ''
       else
         vim_item.kind = kind_icons[vim_item.kind]
       end
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
-        snippy = "[SNP]",
+        luasnip = "[SNP]",
         cmp_tabnine = "[TN]",
         path = "[Path]",
         buffer = "[Buf]",
@@ -164,3 +165,7 @@ cmp.setup.cmdline('/', {
     },
   })
 })
+
+-- nvim-autopairs
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())

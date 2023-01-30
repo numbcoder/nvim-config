@@ -1,4 +1,5 @@
 local lspconfig = require('lspconfig')
+local keymap = vim.keymap.set
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -29,9 +30,9 @@ local on_attach = function(client, bufnr)
 
   -- show diagnostic
   vim.api.nvim_create_autocmd("CursorHold", {
-    group = 'lsp_attach_group',
+    group = "lsp_attach_group",
     buffer = bufnr,
-    callback = require('lspsaga.diagnostic').show_line_diagnostics,
+    command = "Lspsaga show_line_diagnostics",
   })
 end
 
@@ -59,7 +60,7 @@ capabilities.textDocument.foldingRange = {
 
 -- lsp flags
 local lsp_flags = {
-  debounce_text_changes = 400,
+  debounce_text_changes = 300,
 }
 
 -- ruby lsp
@@ -69,35 +70,70 @@ lspconfig.solargraph.setup({
   capabilities = capabilities,
 })
 
+-- local theme_colors = require("onedarkpro.helpers").get_colors()
 -- lspsaga
-require('lspsaga').init_lsp_saga{
-  border_style = "rounded",
-  diagnostic_header = {"✗", "▵", "", "●"},
-  max_preview_lines = 30,
-  finder_action_keys = {
-    open = "o",
-    vsplit = "v",
-    split = "x",
-    quit = "q",
-    scroll_down = "<C-f>",
-    scroll_up = "<C-b>",
+require('lspsaga').setup({
+  ui = {
+    border = "rounded",
+    diagnostic = '  ',
+    -- colors = {
+    --   --float window normal bakcground color
+    --   normal_bg = theme_colors.float_bg,
+    --   --title background color
+    --   title_bg = theme_colors.gray,
+    --   red = theme_colors.red,
+    --   magenta = theme_colors.magenta,
+    --   orange = theme_colors.orange,
+    --   yellow = theme_colors.yellow,
+    --   green = theme_colors.green,
+    --   cyan = theme_colors.cyan,
+    --   blue = theme_colors.blue,
+    --   purple = theme_colors.purple,
+    --   white = theme_colors.white,
+    --   black = theme_colors.black,
+    -- },
   },
-}
+  symbol_in_winbar = {
+    enable = false
+  },
+  -- diagnostic_header = {"✗", "▵", "", "●"},
+  -- max_preview_lines = 30,
+  finder = {
+    edit = { 'o', '<CR>' },
+    vsplit = 'v',
+    split = 'x',
+    tabe = 't',
+    quit = { 'q', '<ESC>' },
+  },
+})
 
 -- lspsaga keymap
-local opts = {noremap = true, silent = true}
-vim.keymap.set("n", "gh", require("lspsaga.finder").lsp_finder, opts)
-vim.keymap.set("n", "gd", function() require('telescope.builtin').lsp_definitions({jump_type = 'vsplit'}) end, opts)
-vim.keymap.set("n", "gp", require("lspsaga.definition").peek_definition, opts)
-vim.keymap.set("n", "gr", require("lspsaga.rename").lsp_rename, opts)
-vim.keymap.set("n", "gx", require("lspsaga.codeaction").code_action, opts)
-vim.keymap.set("v", "gx", function()
-  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
-  require("lspsaga.codeaction").range_code_action()
-end, opts)
-vim.keymap.set("n", "K",  require("lspsaga.hover").render_hover_doc, opts)
-vim.keymap.set("n", "go", require("lspsaga.diagnostic").show_line_diagnostics, opts)
-vim.keymap.set("n", "gj", require("lspsaga.diagnostic").goto_next, opts)
-vim.keymap.set("n", "gk", require("lspsaga.diagnostic").goto_prev, opts)
-vim.keymap.set("n", "<C-d>", function() require('lspsaga.action').smart_scroll_with_saga(1) end, opts)
-vim.keymap.set("n", "<C-u>", function() require('lspsaga.action').smart_scroll_with_saga(-1) end, opts)
+-- Lsp finder find the symbol definition implement reference
+keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>")
+
+-- Code action
+keymap({"n","v"}, "gx", "<cmd>Lspsaga code_action<CR>")
+
+-- Rename
+keymap("n", "gr", "<cmd>Lspsaga rename<CR>")
+
+-- Peek Definition
+keymap("n", "gp", "<cmd>Lspsaga peek_definition<CR>")
+
+-- Go to Definition
+-- keymap("n","gd", "<cmd>Lspsaga goto_definition<CR>")
+keymap("n", "gd", function() require('telescope.builtin').lsp_definitions({jump_type = 'vsplit'}) end)
+
+-- show_line_diagnsotic float window unfocus
+keymap("n", "go", "<cmd>Lspsaga show_line_diagnostics<CR>")
+
+-- Diagnsotic jump can use `<c-o>` to jump back
+keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+keymap("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+
+-- Outline
+keymap("n","<leader>o", "<cmd>Lspsaga outline<CR>")
+-- Hover Doc
+keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>")
+-- Float terminal
+keymap({"n", "t"}, "<leader>t", "<cmd>Lspsaga term_toggle<CR>")

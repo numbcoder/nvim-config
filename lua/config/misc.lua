@@ -168,8 +168,8 @@ end
 
 -- olimorris/onedarkpro.nvim
 M.onedarkpro = function()
+  local color = require("onedarkpro.helpers")
   require("onedarkpro").setup({
-    dark_theme = 'onedark_vivid',
     caching = true,
     plugins = {
       all = false,
@@ -193,6 +193,7 @@ M.onedarkpro = function()
     highlights = {
       -- editor
       CursorLineNr = { fg = "${fg}" },
+      PmenuSel = { bg = color.lighten("bg", 9, "onedark_vivid") }, -- default: 0.97
       -- nvim-tree
       NvimTreeFolderIcon = { fg = "${blue}" },
       -- telescope
@@ -203,7 +204,12 @@ M.onedarkpro = function()
     }
   })
 
-  vim.cmd [[ colorscheme onedarkpro ]]
+  vim.cmd("colorscheme onedark_vivid")
+end
+
+-- ckolkey/ts-node-action
+M.ts_node_action = function()
+  vim.keymap.set("n", '<leader>k', require("ts-node-action").node_action, { desc = "Trigger Node Action" })
 end
 
 return M

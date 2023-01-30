@@ -124,18 +124,6 @@ let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_fenced_languages = ['bash=sh', 'ruby', 'javascript', 'lua']
 let g:vim_markdown_conceal = 0
 
-"------------- telescope ------------
-nnoremap <leader>f <cmd>Telescope find_files<cr>
-nnoremap <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <leader>b <cmd>Telescope buffers<cr>
-nnoremap <leader>t <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <D-p> <cmd>Telescope find_files<cr>
-nnoremap <C-p> <cmd>Telescope find_files<cr>
-nnoremap <D-S-p> <cmd>Telescope commands<cr>
-
-"------------- Lazygit ------------
-nnoremap <silent> <leader>lg :LazyGit<CR>
-
 "--------- AnyJump --------{{{
 let g:any_jump_grouping_enabled = 1
 nnoremap <leader>j :AnyJump<CR>
@@ -155,9 +143,6 @@ au FileType python setlocal expandtab softtabstop=4 tabstop=4 shiftwidth=4
 let g:ctrlsf_ackprg = 'rg'
 let g:ctrlsf_auto_close = 0
 nnoremap <leader>/ :CtrlSF<space>
-
-" ----------- nvim-tree ------------
-nnoremap <leader>p :NvimTreeFindFileToggle<CR>
 
 " ----------- vim-visual-multi ------------
 let g:VM_maps = {}

@@ -1,184 +1,196 @@
--- boostrap packer on a new machine
---[[
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
-end
---]]
+-- plugins
+return {
+  "folke/lazy.nvim",
+  'nvim-lua/plenary.nvim',
 
--- impatient needs to be setup before any other lua plugin is loaded
-vim.cmd [[
-  packadd impatient.nvim
-  packadd packer.nvim
-  packadd onedarkpro.nvim
-]]
-require('impatient')
-require('config.misc').onedarkpro()
-
--- defer fire User PackLoad event
-vim.api.nvim_create_autocmd("VimEnter", {
-  pattern = "*",
-  once = true,
-  callback = function()
-    vim.defer_fn(function()
-      vim.api.nvim_exec_autocmds("User", {pattern = "PackLoad"})
-    end, 5)
-  end,
-})
-
-require('packer').startup({function(use)
-  -- Packer can manage itself
-  use { 'wbthomason/packer.nvim' }
-  use { 'lewis6991/impatient.nvim' }
-  use { 'nvim-lua/plenary.nvim' }
-
-  use {
+  {
     'nvim-tree/nvim-web-devicons',
-    config = [[require('config.devicons')]],
-  }
+    config = function() require('config.devicons') end,
+  },
 
-  use {
+  {
+    "olimorris/onedarkpro.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function() require('config.misc').onedarkpro() end,
+  },
+
+  {
     'feline-nvim/feline.nvim',
-    wants = {'nvim-web-devicons'},
-    config = [[require('config.statusline').setup()]],
-    event = 'User PackLoad',
-  }
+    dependencies = 'nvim-web-devicons',
+    config = function() require('config.statusline').setup() end,
+    event = 'VeryLazy',
+  },
 
-  use {
+  {
     'akinsho/bufferline.nvim',
-    wants = { 'nvim-web-devicons' },
-    config = [[require('config.bufferline')]],
-    event = 'User PackLoad',
-  }
+    dependencies = 'nvim-web-devicons',
+    config = function() require('config.bufferline') end,
+    event = 'VeryLazy',
+  },
 
-  use {
+  {
     'nvim-treesitter/nvim-treesitter',
-    requires = { {'p00f/nvim-ts-rainbow'} },
-    run = ':TSUpdate',
-    config = [[require('config.treesitter')]],
-    event = 'User PackLoad'
-  }
+    dependencies = 'mrjones2014/nvim-ts-rainbow',
+    build = ':TSUpdate',
+    config = function() require('config.treesitter') end,
+    event = 'VeryLazy'
+  },
 
-  use {
+  {
     'nvim-tree/nvim-tree.lua',
-    wants = { 'nvim-web-devicons' },
-    config = [[require('config.nvim-tree')]],
+    dependencies = 'nvim-web-devicons',
+    config = function() require('config.nvim-tree') end,
+    keys = { {'<leader>p', ':NvimTreeFindFileToggle<CR>', desc = 'NvimTreeFindFileToggle'} },
     cmd = {'NvimTreeToggle', 'NvimTreeFindFileToggle'}
-  }
+  },
 
-  use {
+  {
     'nvim-telescope/telescope.nvim',
-    requires = {
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = "make" },
-    },
-    wants = {
+    dependencies = {
       'plenary.nvim',
-      'telescope-fzf-native.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = "make" },
+    },
+    config = function() require('config.telescope') end,
+    keys = {
+      { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "find files" },
+      { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "find files" },
+      { "<leader>g", "<cmd>Telescope live_grep<cr>", desc = "live greps" },
+      { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "find buffers" },
     },
     cmd = "Telescope",
-    config = [[require('config.telescope')]],
-  }
+  },
 
-  use { "hrsh7th/nvim-cmp", config = [[require('config.cmp')]], event = 'User PackLoad' }
-  use { "hrsh7th/cmp-path", after = "nvim-cmp" }
-  use { "hrsh7th/cmp-buffer", after = "nvim-cmp" }
-  use { "hrsh7th/cmp-cmdline", after = "nvim-cmp" }
-  use { 'tzachar/cmp-tabnine', run = './install.sh', after = "nvim-cmp" }
-
-  use {
-    "dcampos/cmp-snippy",
-    requires = {
-      'dcampos/nvim-snippy',
-      'honza/vim-snippets',
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-cmdline",
+      "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      { 'tzachar/cmp-tabnine', build = './install.sh' },
+      { 'saadparwaiz1/cmp_luasnip', dependencies = 'L3MON4D3/LuaSnip' },
+      'windwp/nvim-autopairs',
     },
-    after = "nvim-cmp"
-  }
+    config = function() require('config.cmp') end,
+    event = 'InsertEnter'
+  },
 
-  use { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" }
-  use { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" }
-  use { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" }
-  use { "neovim/nvim-lspconfig", after = "cmp-nvim-lsp" }
-  use { 'glepnir/lspsaga.nvim', config = [[require('config.lsp')]], after = 'nvim-lspconfig' }
+  -- snippets
+  {
+    "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp",
+    dependencies = "rafamadriz/friendly-snippets",
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip").filetype_extend("ruby", {"rails"})
+      require("luasnip").setup( {
+        history = true,
+        delete_check_events = "TextChanged",
+      })
+    end
+  },
 
-  use { 'windwp/nvim-autopairs', config = [[require('config.misc').autopairs()]], after = 'nvim-treesitter' }
-  use {
+  {
+    'glepnir/lspsaga.nvim',
+    dependencies = 'nvim-lspconfig',
+    config = function() require('config.lsp') end,
+    event = 'BufReadPost'
+  },
+
+  {
+    'windwp/nvim-autopairs',
+    dependencies = 'nvim-treesitter',
+    config = function() require('config.misc').autopairs() end,
+  },
+
+  {
     'lewis6991/gitsigns.nvim',
-    wants = { 'plenary.nvim' },
-    config = [[require('config.misc').gitsigns()]],
-    event = 'User PackLoad'
-  }
+    dependencies = 'plenary.nvim',
+    config = function() require('config.misc').gitsigns() end,
+    event = 'VeryLazy'
+  },
 
-  use {
+  {
     'monaqa/dial.nvim',
-    keys = {{'n', '<C-a>'}, {'n', '<C-x>'}},
-    config = [[require('config.misc').dial()]]
-  }
+    keys = { '<C-a>', '<C-x>' },
+    config = function() require('config.misc').dial() end
+  },
 
-  use {
+  {
+    'ckolkey/ts-node-action',
+    dependencies = 'nvim-treesitter',
+    keys = { '<leader>k' },
+    config = function() require('config.misc').ts_node_action() end,
+  },
+
+  {
     'numToStr/Comment.nvim',
     keys = {'gcc', 'gbc'},
-    config = [[require('config.misc').comment()]]
-  }
-  -- use { 'github/copilot.vim' }
+    config = function() require('config.misc').comment() end,
+  },
 
-  use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
-  use { 'pechorin/any-jump.vim', cmd = 'AnyJump' }
-  use { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' }
+  {
+    'kdheepak/lazygit.nvim',
+    keys = { { '<leader>lg', ':LazyGit<CR>', desc = 'Open LazyGit' } },
+    cmd = 'LazyGit'
+  },
 
-  -- use { 'machakann/vim-sandwich', keys = {{'n', 's'}, {'v', 's'}} }
-  use { 'mg979/vim-visual-multi', keys = {'<C-n>'} }
-  use {
+  { 'pechorin/any-jump.vim', cmd = 'AnyJump' },
+  { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' },
+
+  { 'mg979/vim-visual-multi', keys = { '<C-n>' } },
+
+  {
     'kylechui/nvim-surround',
-    keys = {{'n', 's'}, {'v', 's'}},
-    config = [[require('config.misc').surround()]],
-  }
-  use {
+    keys = { 's', {'s', mode = 'v'} },
+    config = function() require('config.misc').surround() end,
+  },
+
+  {
     'kevinhwang91/nvim-hlslens',
     keys = {'n', '/', '*'},
-    config = [[require('config.misc').hlslens()]],
-  }
-  use {
-    'kevinhwang91/nvim-ufo',
-    requires = 'kevinhwang91/promise-async',
-    wants = { 'promise-async' },
-    config = [[require('config.misc').ufo()]],
-    event = 'User PackLoad'
-  }
+    config = function() require('config.misc').hlslens() end,
+  },
 
-  use {
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = 'kevinhwang91/promise-async',
+    config = function() require('config.misc').ufo() end,
+    event = 'VeryLazy'
+  },
+
+  {
     'lukas-reineke/indent-blankline.nvim',
-    event = "User PackLoad",
-    config = [[require('config.misc').indent_blankline()]],
-  }
-  use { 'ntpeters/vim-better-whitespace', event = 'User PackLoad' }
-  use {
+    config = function() require('config.misc').indent_blankline() end,
+    event = "VeryLazy",
+  },
+
+  { 'ntpeters/vim-better-whitespace', event = 'BufReadPost' },
+
+  {
     'rcarriga/nvim-notify',
-    event = 'User PackLoad',
-    config = [[ vim.notify = require("notify") ]],
-  }
-  use {
+    config = function() vim.notify = require("notify") end,
+    event = 'VeryLazy',
+  },
+
+  {
     'NvChad/nvim-colorizer.lua',
     ft = {'css', 'html', 'lua'},
     cmd = 'ColorizerToggle',
-    config = [[require('colorizer').setup()]],
-  }
-  use {
-    'stevearc/dressing.nvim',
-    event = 'User PackLoad',
-    config = [[require('config.misc').dressing()]],
-  }
+    opts = {},
+  },
 
-  use 'olimorris/onedarkpro.nvim'
+  {
+    'stevearc/dressing.nvim',
+    event = 'VeryLazy',
+    config = function() require('config.misc').dressing() end,
+  },
 
   -- lang
-  use { 'vim-ruby/vim-ruby', ft = 'ruby' }
-  use { 'plasticboy/vim-markdown', ft = 'markdown' }
-end,
-config = {
-  auto_clean = false,
-  opt_default = true,
-  display = {
-    open_fn = require('packer.util').float,
-  }
-}})
+  { 'vim-ruby/vim-ruby', ft = 'ruby' },
+}
 
