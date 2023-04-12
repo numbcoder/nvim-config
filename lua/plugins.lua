@@ -46,6 +46,13 @@ return {
   },
 
   {
+    "neovim/nvim-lspconfig",
+    dependencies = 'hrsh7th/cmp-nvim-lsp',
+    config = function() require('config.lsp') end,
+    event = 'BufReadPost',
+  },
+
+  {
     'nvim-telescope/telescope.nvim',
     dependencies = {
       'plenary.nvim',
@@ -67,11 +74,11 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-cmdline",
-      "neovim/nvim-lspconfig",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lsp-document-symbol",
-      { 'tzachar/cmp-tabnine', build = './install.sh' },
+      -- { 'tzachar/cmp-tabnine', build = './install.sh' },
+      { "jcdickinson/codeium.nvim", opts = {} },
       { 'saadparwaiz1/cmp_luasnip', dependencies = 'L3MON4D3/LuaSnip' },
       'windwp/nvim-autopairs',
     },
@@ -97,8 +104,8 @@ return {
   {
     'glepnir/lspsaga.nvim',
     dependencies = 'nvim-lspconfig',
-    config = function() require('config.lsp') end,
-    event = 'BufReadPost'
+    config = function() require('config.lspsaga') end,
+    event = 'LspAttach'
   },
 
   {
@@ -106,6 +113,8 @@ return {
     dependencies = 'nvim-treesitter',
     config = function() require('config.misc').autopairs() end,
   },
+
+  { "utilyre/sentiment.nvim", opts = {}, event = 'VeryLazy' },
 
   {
     'lewis6991/gitsigns.nvim',
@@ -142,11 +151,11 @@ return {
   { 'pechorin/any-jump.vim', cmd = 'AnyJump' },
   { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' },
 
-  { 'mg979/vim-visual-multi', keys = { '<C-n>' } },
+  { 'mg979/vim-visual-multi', keys = { {'<C-n>', mode = {'n', 'v'} } } },
 
   {
     'kylechui/nvim-surround',
-    keys = { 's', {'s', mode = 'v'} },
+    keys = { {'s', mode = {'n', 'v'} } },
     config = function() require('config.misc').surround() end,
   },
 
@@ -160,7 +169,7 @@ return {
     'kevinhwang91/nvim-ufo',
     dependencies = 'kevinhwang91/promise-async',
     config = function() require('config.misc').ufo() end,
-    event = 'VeryLazy'
+    keys = {'za', 'zR', 'zM', '<Tab>', 'zm'},
   },
 
   {

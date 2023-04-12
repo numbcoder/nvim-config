@@ -46,11 +46,21 @@ end
 
 -- nvim-ufo
 M.ufo = function()
-  vim.wo.foldcolumn = '0'
-  vim.wo.foldlevel = 20
-  vim.wo.foldenable = true
+  vim.o.foldcolumn = '0'
+  vim.o.foldlevel = 99
+  vim.o.foldlevelstart = 99
+  vim.o.foldenable = true
+
+  vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+  vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+  vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds)
+  vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith)
+  vim.keymap.set('n', '<Tab>', 'za')
 
   require('ufo').setup({
+    provider_selector = function(bufnr, filetype, buftype)
+      return {'treesitter', 'indent'}
+    end,
     fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
       local newVirtText = {}
       local suffix = ('   %d '):format(endLnum - lnum)
@@ -170,10 +180,12 @@ end
 M.onedarkpro = function()
   local color = require("onedarkpro.helpers")
   require("onedarkpro").setup({
-    caching = true,
+    filetypes = {
+      php = false,
+    },
     plugins = {
       all = false,
-      native_lsp = true,
+      nvim_lsp = true,
       gitsigns = true,
       indentline = true,
       lsp_saga = true,
@@ -181,13 +193,12 @@ M.onedarkpro = function()
       nvim_notify = true,
       nvim_tree = true,
       nvim_ts_rainbow = true,
-      packer = true,
+      nvim_hlslens = true,
       telescope = true,
       toggleterm = true,
       treesitter = true,
     },
     options = {
-      bold = false,
       cursorline = true,
     },
     highlights = {
@@ -201,6 +212,8 @@ M.onedarkpro = function()
       TelescopeSelectionCaret = { fg = "${blue}" },
       TelescopeMatching = { fg = "${yellow}" },
       TelescopePromptPrefix = { fg = "${blue}" },
+      -- lsp_saga
+      SagaNormal = { bg = "${float_bg}" }
     }
   })
 

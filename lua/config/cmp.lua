@@ -85,7 +85,8 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
-    { name = 'cmp_tabnine' },
+    { name = "codeium" },
+    -- { name = 'cmp_tabnine' },
     { name = 'luasnip' },
     { name = 'path' },
   }, {
@@ -107,13 +108,16 @@ cmp.setup({
       -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
       if entry.source.name == 'cmp_tabnine' then
         vim_item.kind = ''
+      elseif entry.source.name == 'codeium' then
+        vim_item.kind = ""
       else
         vim_item.kind = kind_icons[vim_item.kind]
       end
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
         luasnip = "[SNP]",
-        cmp_tabnine = "[TN]",
+        -- cmp_tabnine = "[TN]",
+        codeium = "[Code]",
         path = "[Path]",
         buffer = "[Buf]",
       })[entry.source.name]

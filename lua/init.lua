@@ -18,6 +18,7 @@ local disabled_built_ins = {
   "rrhelper",
   "spellfile_plugin",
   "tutor_mode_plugin",
+  "matchparen", -- use utilyre/sentiment.nvim
 }
 
 for _, plugin in pairs(disabled_built_ins) do

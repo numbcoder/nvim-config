@@ -1,13 +1,22 @@
-local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {
   disable_netrw       = true,
   hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = true,
   select_prompts      = true,
+  on_attach = function(bufnr)
+    local api = require('nvim-tree.api')
+
+    local function opts(desc)
+      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    api.config.mappings.default_on_attach(bufnr)
+
+    -- custom mappings
+    vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+  end,
   renderer = {
     indent_markers = {
       enable = true,
@@ -41,18 +50,7 @@ require'nvim-tree'.setup {
     timeout = 500,
   },
   view = {
-    adaptive_size = true,
     width = 40,
-    hide_root_folder = false,
-    side = 'left',
-    mappings = {
-      custom_only = false,
-      list = {
-        { key = "?", cb = tree_cb("toggle_help") },
-      }
-    },
-    number = false,
-    relativenumber = false
   },
   trash = {
     cmd = "trash",

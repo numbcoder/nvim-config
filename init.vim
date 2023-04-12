@@ -119,11 +119,6 @@ nnoremap <D-k> :tabnext<CR>
 nnoremap <D-S-{> :tabprevious<CR>
 nnoremap <D-S-}> :tabnext<CR>
 
-" --- markdown -------------
-let g:vim_markdown_folding_disabled=1
-let g:vim_markdown_fenced_languages = ['bash=sh', 'ruby', 'javascript', 'lua']
-let g:vim_markdown_conceal = 0
-
 "--------- AnyJump --------{{{
 let g:any_jump_grouping_enabled = 1
 nnoremap <leader>j :AnyJump<CR>
