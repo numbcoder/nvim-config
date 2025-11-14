@@ -16,13 +16,6 @@ return {
   },
 
   {
-    'feline-nvim/feline.nvim',
-    dependencies = 'nvim-web-devicons',
-    config = function() require('config.statusline').setup() end,
-    event = 'VeryLazy',
-  },
-
-  {
     'akinsho/bufferline.nvim',
     dependencies = 'nvim-web-devicons',
     config = function() require('config.bufferline') end,
@@ -30,11 +23,9 @@ return {
   },
 
   {
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = 'mrjones2014/nvim-ts-rainbow',
-    build = ':TSUpdate',
-    config = function() require('config.treesitter') end,
-    event = 'VeryLazy'
+    'HiPhish/rainbow-delimiters.nvim',
+    config = function() require('config.misc').rainbow() end,
+    event = 'BufReadPost',
   },
 
   {
@@ -47,71 +38,17 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    dependencies = 'hrsh7th/cmp-nvim-lsp',
+    dependencies = { 'saghen/blink.cmp' },
+    -- dependencies = 'hrsh7th/cmp-nvim-lsp',
     config = function() require('config.lsp') end,
-    event = 'BufReadPost',
-  },
-
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = {
-      'plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = "make" },
-    },
-    config = function() require('config.telescope') end,
-    keys = {
-      { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "find files" },
-      { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "find files" },
-      { "<leader>g", "<cmd>Telescope live_grep<cr>", desc = "live greps" },
-      { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "find buffers" },
-    },
-    cmd = "Telescope",
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
-      "hrsh7th/cmp-nvim-lsp-document-symbol",
-      -- { 'tzachar/cmp-tabnine', build = './install.sh' },
-      { "jcdickinson/codeium.nvim", opts = {} },
-      { 'saadparwaiz1/cmp_luasnip', dependencies = 'L3MON4D3/LuaSnip' },
-      'windwp/nvim-autopairs',
-    },
-    config = function() require('config.cmp') end,
-    event = 'InsertEnter'
-  },
-
-  -- snippets
-  {
-    "L3MON4D3/LuaSnip",
-    build = "make install_jsregexp",
-    dependencies = "rafamadriz/friendly-snippets",
-    config = function()
-      require("luasnip.loaders.from_vscode").lazy_load()
-      require("luasnip").filetype_extend("ruby", {"rails"})
-      require("luasnip").setup( {
-        history = true,
-        delete_check_events = "TextChanged",
-      })
-    end
-  },
-
-  {
-    'glepnir/lspsaga.nvim',
-    dependencies = 'nvim-lspconfig',
-    config = function() require('config.lspsaga') end,
-    event = 'LspAttach'
+    event = 'VeryLazy',
   },
 
   {
     'windwp/nvim-autopairs',
     dependencies = 'nvim-treesitter',
     config = function() require('config.misc').autopairs() end,
+    event = "InsertEnter",
   },
 
   { "utilyre/sentiment.nvim", opts = {}, event = 'VeryLazy' },
@@ -138,18 +75,11 @@ return {
 
   {
     'numToStr/Comment.nvim',
-    keys = {'gcc', 'gbc'},
+    keys = {'gcc', 'gbc', "<D-/>"},
     config = function() require('config.misc').comment() end,
   },
 
-  {
-    'kdheepak/lazygit.nvim',
-    keys = { { '<leader>lg', ':LazyGit<CR>', desc = 'Open LazyGit' } },
-    cmd = 'LazyGit'
-  },
-
   { 'pechorin/any-jump.vim', cmd = 'AnyJump' },
-  { 'dyng/ctrlsf.vim', cmd = 'CtrlSF' },
 
   { 'mg979/vim-visual-multi', keys = { {'<C-n>', mode = {'n', 'v'} } } },
 
@@ -170,21 +100,17 @@ return {
     dependencies = 'kevinhwang91/promise-async',
     config = function() require('config.misc').ufo() end,
     keys = {'za', 'zR', 'zM', '<Tab>', 'zm'},
+    enabled = false
   },
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    main = "ibl",
     config = function() require('config.misc').indent_blankline() end,
     event = "VeryLazy",
   },
 
   { 'ntpeters/vim-better-whitespace', event = 'BufReadPost' },
-
-  {
-    'rcarriga/nvim-notify',
-    config = function() vim.notify = require("notify") end,
-    event = 'VeryLazy',
-  },
 
   {
     'NvChad/nvim-colorizer.lua',
@@ -199,7 +125,30 @@ return {
     config = function() require('config.misc').dressing() end,
   },
 
+  {
+    "chrisgrieser/nvim-early-retirement",
+    opts = { retirementAgeMins = 60 },
+    enabled = false,
+    event = "VeryLazy",
+  },
+
+
+  {
+    'jinh0/eyeliner.nvim',
+    event = 'BufReadPost',
+    opts = { highlight_on_key = true,  dim = true },
+  },
+
+  {
+    "hat0uma/csvview.nvim",
+    cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+  },
+  {
+    'mvllow/modes.nvim',
+    event = 'VeryLazy',
+  },
+
   -- lang
-  { 'vim-ruby/vim-ruby', ft = 'ruby' },
+  -- { 'vim-ruby/vim-ruby', ft = 'ruby' },
 }
 

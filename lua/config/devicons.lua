@@ -3,7 +3,7 @@ require'nvim-web-devicons'.setup {
   -- DevIcon will be appended to `name`
   override = {
     js = {
-      icon = "",
+      icon = "󰌞",
       color = "#cbcb41",
       name = "js",
     },

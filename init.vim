@@ -7,9 +7,6 @@ let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 
 "------------------ global options -------------------------
-" Use the directory of the related buffer
-set browsedir=buffer
-
 set fileencoding=utf-8
 set fileencodings=utf-8,gb18030,gbk,gb2312,ucs-bom,cp936,latin1
 
@@ -21,7 +18,7 @@ set nobackup
 set noswapfile
 set nowritebackup
 
-set scrolloff=5
+set scrolloff=10
 
 " default tab size
 set tabstop=2
@@ -62,25 +59,33 @@ set completeopt=menu,menuone,noselect
 " turn on linematch for diff
 set diffopt+=linematch:60
 
+" turn on smooth scroll
+set smoothscroll
+
 " highlight on yank
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 "---------------  key maps ---------------------
 " map leader to space
 let mapleader = "\<Space>"
+let maplocalleader = ","
 nnoremap <silent> <leader>, :nohlsearch<CR>
 
 " map ; to :
 nnoremap ; :
+" map ; to : for ruby
+au FileType ruby inoremap ; :
 " map Ctrl c to copy for terminal
 vnoremap <C-c> "+y
+vnoremap <D-c> "+y
 nnoremap <C-c> "+yy
+nnoremap <D-c> "+yy
 
 " Easy window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
@@ -110,14 +115,17 @@ endif
 
 " map contrl-s to save
 inoremap <C-S> <C-C>:w<CR>
-inoremap <D-s> <esc>:w<cr>
+inoremap <D-s> <ESC>:w<CR>
+noremap <D-s> :w<CR>
+noremap <D-w> :q<CR>
 noremap :W :w<CR>
-"imap jj <ESC>
-nnoremap ^T :tabnew .<CR>
-nnoremap <D-j> :tabprevious<CR>
-nnoremap <D-k> :tabnext<CR>
-nnoremap <D-S-{> :tabprevious<CR>
-nnoremap <D-S-}> :tabnext<CR>
+nnoremap <D-a> ggVG
+vnoremap <D-a> gg0oG$
+nnoremap <D-t> :tabnew<CR>
+nnoremap <D-[> :tabprevious<CR>
+nnoremap <D-]> :tabnext<CR>
+" nnoremap <D-S-{> :tabprevious<CR>
+" nnoremap <D-S-}> :tabnext<CR>
 
 "--------- AnyJump --------{{{
 let g:any_jump_grouping_enabled = 1
@@ -133,11 +141,6 @@ au FileType go setlocal noexpandtab softtabstop=4 tabstop=4 shiftwidth=4
 
 "------ python indent ----------
 au FileType python setlocal expandtab softtabstop=4 tabstop=4 shiftwidth=4
-
-"------------ ctrlsf -------------
-let g:ctrlsf_ackprg = 'rg'
-let g:ctrlsf_auto_close = 0
-nnoremap <leader>/ :CtrlSF<space>
 
 " ----------- vim-visual-multi ------------
 let g:VM_maps = {}

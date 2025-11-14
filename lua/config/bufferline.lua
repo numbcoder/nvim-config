@@ -51,7 +51,7 @@ require('bufferline').setup {
       icon = '▎',
       style = 'icon',
     },
-    buffer_close_icon = ' ',
+    buffer_close_icon = ' 󰖭',
     modified_icon = ' ',
     close_icon = '',
     left_trunc_marker = '',
@@ -157,3 +157,7 @@ require('bufferline').setup {
     },
   }
 }
+
+-- keymaps
+vim.keymap.set({'n', 'i', 'v'}, '<D-j>', '<ESC>:BufferLineCycleNext<CR>')
+vim.keymap.set({'n', 'i', 'v'}, '<D-k>', '<ESC>:BufferLineCyclePrev<CR>')

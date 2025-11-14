@@ -1,14 +1,16 @@
+local opt = vim.opt
+
 -- Disable some built-in plugins we don't want
 local disabled_built_ins = {
   "netrw",
   "netrwPlugin",
   "netrwSettings",
   "netrwFileHandlers",
-  "gzip",
-  "zip",
-  "zipPlugin",
-  "tar",
-  "tarPlugin",
+  -- "gzip",
+  -- "zip",
+  -- "zipPlugin",
+  -- "tar",
+  -- "tarPlugin",
   "getscript",
   "getscriptPlugin",
   "vimball",
@@ -30,6 +32,15 @@ vim.filetype.add({
     axlsx = 'ruby',
   },
 })
+
+opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
 
 -- boostrap lazy.nvim on a new machine
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

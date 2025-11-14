@@ -5,11 +5,11 @@ local keymap = vim.api.nvim_set_keymap
 M.gitsigns = function()
   require('gitsigns').setup({
     signs = {
-      add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-      change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-      delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-      topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-      changedelete = {hl = 'GitSignsChange', text = '≃', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+      add          = { text = '+' },
+      change       = { text = '~' },
+      delete       = { text = '_' },
+      topdelete    = { text = '‾' },
+      changedelete = { text = '≃' },
     },
     on_attach = function(bufnr)
       local gs = package.loaded.gitsigns
@@ -46,7 +46,7 @@ end
 
 -- nvim-ufo
 M.ufo = function()
-  vim.o.foldcolumn = '0'
+  vim.o.foldcolumn = '1'
   vim.o.foldlevel = 99
   vim.o.foldlevelstart = 99
   vim.o.foldenable = true
@@ -63,7 +63,7 @@ M.ufo = function()
     end,
     fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
       local newVirtText = {}
-      local suffix = ('   %d '):format(endLnum - lnum)
+      local suffix = (' 󰁂 %d '):format(endLnum - lnum)
       local sufWidth = vim.fn.strdisplaywidth(suffix)
       local targetWidth = width - sufWidth
       local curWidth = 0
@@ -93,16 +93,9 @@ end
 
 -- indent_blankline
 M.indent_blankline = function()
-  require("indent_blankline").setup {
-    char = '┊',
-    filetype_exclude = {'help', 'NvimTree', 'terminal', 'packer'},
-    use_treesitter = true,
-    show_current_context = true,
-    max_indent_increase = 1,
-    char_highlight_list = {'Whitespace'},
-    context_highlight_list = {'Whitespace'},
-    show_first_indent_level = false,
-    show_trailing_blankline_indent = false,
+  require("ibl").setup {
+    indent = { char = '┊', highlight = {'Whitespace'} },
+    scope = { char = "▏", highlight = {'Whitespace'} },
   }
 end
 
@@ -110,7 +103,7 @@ end
 M.autopairs = function()
   local npairs = require('nvim-autopairs')
   npairs.setup({
-    disable_filetype = { "TelescopePrompt" },
+    disable_filetype = { },
   })
   npairs.add_rules(require('nvim-autopairs.rules.endwise-lua'))
   npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
@@ -122,6 +115,9 @@ M.comment = function()
     -- ignore empty lines
     -- ignore = '^$',
   })
+  vim.keymap.set('n', '<D-/>', 'gcc', {remap = true})
+  vim.keymap.set('x', '<D-/>', 'gc', {remap = true})
+  vim.keymap.set('i', '<D-/>', '<ESC>gcc', {remap = true})
 end
 
 -- dial.nvim
@@ -186,15 +182,16 @@ M.onedarkpro = function()
     plugins = {
       all = false,
       nvim_lsp = true,
+      lsp_semantic_tokens = true,
       gitsigns = true,
       indentline = true,
-      lsp_saga = true,
-      nvim_cmp = true,
+      blink_cmp = true,
+      copilot = true,
       nvim_notify = true,
       nvim_tree = true,
-      nvim_ts_rainbow = true,
+      rainbow_delimiters = true,
       nvim_hlslens = true,
-      telescope = true,
+      snacks = true,
       toggleterm = true,
       treesitter = true,
     },
@@ -207,13 +204,8 @@ M.onedarkpro = function()
       PmenuSel = { bg = color.lighten("bg", 9, "onedark_vivid") }, -- default: 0.97
       -- nvim-tree
       NvimTreeFolderIcon = { fg = "${blue}" },
-      -- telescope
-      TelescopeSelection = { bg = "${cursorline}", fg = "${fg}" },
-      TelescopeSelectionCaret = { fg = "${blue}" },
-      TelescopeMatching = { fg = "${yellow}" },
-      TelescopePromptPrefix = { fg = "${blue}" },
-      -- lsp_saga
-      SagaNormal = { bg = "${float_bg}" }
+      -- treesitter
+      ["@string.special.symbol"] = { fg = "${cyan}"}
     }
   })
 
@@ -223,6 +215,30 @@ end
 -- ckolkey/ts-node-action
 M.ts_node_action = function()
   vim.keymap.set("n", '<leader>k', require("ts-node-action").node_action, { desc = "Trigger Node Action" })
+end
+
+-- HiPhish/rainbow-delimiters.nvim
+M.rainbow = function()
+  local rainbow = require('rainbow-delimiters')
+  require('rainbow-delimiters.setup').setup {
+    strategy = {
+      [''] = function(bufnr)
+        -- Disabled for very large files, global strategy for large files,
+        local line_count = vim.api.nvim_buf_line_count(bufnr)
+        if line_count < 500 then
+          return rainbow.strategy['global']
+        elseif line_count < 1000 then
+          return rainbow.strategy['local']
+        else
+          return nil
+        end
+      end
+    },
+    query = {
+      [''] = 'rainbow-delimiters',
+      lua = 'rainbow-blocks',
+    },
+  }
 end
 
 return M
